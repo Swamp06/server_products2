@@ -3,7 +3,18 @@ import {v4 as uuidv4} from "uuid"
 
 class FileService{
     async saveFile(file){
+        
         try {
+            if (!file) {
+                throw new Error("Файл не передан")
+            }
+
+            const MAX_SIZE = 5 * 1024 * 1024
+            
+            if (file.size > MAX_SIZE) {
+                throw new Error("Файл слишком большой, максимальный размер файла 5МБ")
+            }
+
             const fileType = file.name.split(".").pop()
             const fileName = `${uuidv4()}.${fileType}`
 

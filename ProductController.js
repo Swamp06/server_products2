@@ -18,6 +18,9 @@ class ProductController {
       
       if (req.files && req.files.image) {
         fileName = await fileService.saveFile(req.files.image) 
+        if (!fileName) {
+          res.send("Файл слишком большой, максимальный размер файла 5МБ")
+        }
       }
       
       const { title, description, price } = req.body;
@@ -31,6 +34,7 @@ class ProductController {
       await newProduct.save();
       res.send("Продукт успешно добавлен!");
     } catch (error) {
+
       console.log("Ошибка при добавлении продукта: " + error);
     }
   }
